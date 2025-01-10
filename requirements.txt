@@ -16,7 +16,7 @@ distlib==0.3.0
 distro==1.4.0
 #distro-info==0.23+ubuntu1.1
 docutils==0.16
-duplicity==0.8.12.1612
+duplicity==2.2.4
 entrypoints==0.3
 et-xmlfile==2.0.0
 fasteners==0.14.1
