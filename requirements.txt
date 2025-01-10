@@ -1,5 +1,4 @@
 appdirs==1.4.3
-apturl==0.5.2
 awscli==1.18.69
 bcrypt==3.1.7
 blinker==1.8.2
