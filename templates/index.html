@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cyber Security Awareness Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1d6ca7, #444545, #f8f8f8f5);
+            color: #fff;
+        }
+        h1 {
+            color: #fff;
+        }
+        #game-container {
+            display: none;
+            text-align: center;
+        }
+        #flag-section {
+            display: none;
+            text-align: center;
+        }
+        .question {
+            margin: 20px 0;
+        }
+        .btn {
+            margin: 20px;
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #6a11cb, #06485f);
+            color: #ffde59;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        .btn:hover {
+            background: linear-gradient(135deg, #2575fc, #06485f);
+        }
+        #leaderboard {
+            margin-top: 20px;
+            text-align: center;
+            width: 80%;
+            max-width: 600px;  /* You can adjust the max width */
+            margin: 0 auto;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        li {
+            margin: 5px 0;
+            font-size: 18px;
+        }
+        #timer {
+            font-size: 20px;
+            margin: 10px 0;
+        }
+
+        /* Progress Bar Styles */
+        #progress-container {
+            width: 80%;
+            height: 30px;
+            background-color: #ddd;
+            margin-top: 20px;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        #progress-bar {
+            height: 100%;
+            width: 0;
+            background-color: #4caf50;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            border-radius: 20px;
+            font-size: 18px;
+        }
+
+        /* Retry Button */
+        #retry-btn {
+            display: none;
+            padding: 10px 20px;
+            background: #ff6347;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+        #retry-btn:hover {
+            background: #ff4500;
+        }
+
+        /* Container for input fields side by side */
+        .input-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        /* Adjusted input boxes */
+        #flag-section input {
+            width: 200px;       /* Increased width to make input fields larger */
+            height: 40px;       /* Increased height for better visibility */
+            font-size: 16px;     /* Increased font size */
+            padding: 10px;       /* Padding for better usability */
+            border-radius: 10px; /* Rounded corners */
+            margin: 10px 20px;   /* Space between the fields */
+            border: 2px solid #ffde59;  /* Border color to match theme */
+        }
+
+        /* Flag Box Styling */
+        #flag-box {
+            font-size: 18px;     /* Reduced font size */
+            font-weight: bold;
+            padding: 15px;
+            border: 2px solid #ffde59;
+            background-color: #1d6ca7;
+            color: #fff;
+            display: inline-block;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+
+        /* Scrollable leaderboard styles */
+        #leaderboard-list {
+            max-height: 400px;        /* Set the max height for the leaderboard */
+            overflow-y: auto;         /* Add vertical scroll */
+            padding-right: 10px;      /* Add some space for scrollbar */
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cyber Security Awareness Game</h1>
+    <div id="start-container">
+        <h1>Test your cybersecurity knowledge and earn a hidden flag!</h1>
+        <button class="btn" id="start-game">Start Game</button>
+    </div>
+    <div id="game-container">
+        <div id="timer">Time Left: <span id="time-left">60</span> seconds</div>
+
+        <!-- Progress Bar -->
+        <div id="progress-container">
+            <div id="progress-bar">0%</div>
+        </div>
+
+        <!-- Questions -->
+        <div class="question" id="question-1">
+            <h1>What is the best way to protect your online accounts?</h1>
+            <button class="btn" onclick="gameOver()">Use "password" as your password</button>
+            <button class="btn" onclick="nextQuestion(2)">Enable Two-Factor Authentication</button>
+        </div>
+        <div class="question" id="question-2" style="display:none;">
+            <h1>Which of these is a strong password example?</h1>
+            <button class="btn" onclick="nextQuestion(3)">P@ssw0rd123!</button>
+            <button class="btn" onclick="gameOver()">123456</button>
+        </div>
+        <div class="question" id="question-3" style="display:none;">
+            <h1>You receive a suspicious email. What should you do?</h1>
+            <button class="btn" onclick="gameOver()">Click on the links</button>
+            <button class="btn" onclick="nextQuestion(4)">Report it as spam</button>
+        </div>
+        <div class="question" id="question-4" style="display:none;">
+            <h1>Which of these is an example of a phishing attempt?</h1>
+            <button class="btn" onclick="nextQuestion(5)">An email asking for your password</button>
+            <button class="btn" onclick="gameOver()">A legitimate website</button>
+        </div>
+        <div class="question" id="question-5" style="display:none;">
+            <h1>How often should you update your software?</h1>
+            <button class="btn" onclick="nextQuestion(6)">As soon as updates are available</button>
+            <button class="btn" onclick="gameOver()">Only when issues occur</button>
+        </div>
+        <div class="question" id="question-6" style="display:none;">
+            <h1>What is a secure way to store sensitive information?</h1>
+            <button class="btn" onclick="gameOver()">Write it on sticky notes</button>
+            <button class="btn" onclick="nextQuestion(7)">Use encrypted storage</button>
+        </div>
+        <div class="question" id="question-7" style="display:none;">
+            <h1>Which of these should you avoid sharing on social media?</h1>
+            <button class="btn" onclick="revealFlag()">Your personal information</button>
+            <button class="btn" onclick="gameOver()">Vacation photos</button>
+        </div>        
+    </div>
+
+    <!-- Flag Section -->
+    <div id="flag-section">
+        <h1>Congratulations! You earned the flag:</h1>
+
+        <!-- Flag Box -->
+        <div id="flag-box">
+            FLAG{CYBER_AWARE}
+        </div>
+
+        <h1>Submit your flag below:</h1>
+
+        <!-- Container for input fields side by side -->
+        <div class="input-container">
+            <input type="text" id="username" placeholder="Enter your name">
+            <input type="text" id="flag-input" placeholder="Enter your flag">
+        </div>
+
+        <button class="btn" id="submit-flag-btn" onclick="submitFlag()">Submit Flag</button>
+        <div id="leaderboard">
+            <h2>Leaderboard</h2>
+            <ul id="leaderboard-list"></ul>
+        </div>
+    </div>
+
+    <!-- Retry Button -->
+    <button id="retry-btn" onclick="resetGame()">Retry</button>
+
+    <script>
+        const startContainer = document.getElementById('start-container');
+        const gameContainer = document.getElementById('game-container');
+        const flagSection = document.getElementById('flag-section');
+        const leaderboardList = document.getElementById('leaderboard-list');
+        const timeLeft = document.getElementById('time-left');
+        const progressBar = document.getElementById('progress-bar');
+        const retryBtn = document.getElementById('retry-btn');
+        const submitFlagBtn = document.getElementById('submit-flag-btn');
+    
+        let timer;
+        let timeRemaining = 60;
+        let correctAnswers = 0;  // Track correct answers
+        const totalQuestions = 7;
+    
+        document.getElementById('start-game').addEventListener('click', () => {
+            resetGame();
+            startContainer.style.display = 'none';
+            gameContainer.style.display = 'block';
+            startTimer();
+        });
+    
+        function startTimer() {
+            timer = setInterval(() => {
+                timeRemaining--;
+                timeLeft.textContent = timeRemaining;
+    
+                if (timeRemaining <= 0) {
+                    clearInterval(timer);
+                    alert('Time\'s up! Game Over.');
+                    gameOver();
+                }
+            }, 1000);
+        }
+    
+        function nextQuestion(next) {
+            correctAnswers++;
+            updateProgress(true);  // Update progress bar after each correct answer
+
+            document.getElementById(`question-${next - 1}`).style.display = 'none';
+            document.getElementById(`question-${next}`).style.display = 'block';
+        }
+
+        function updateProgress(isCorrect) {
+            const percentage = (correctAnswers / totalQuestions) * 100;
+            progressBar.style.width = `${percentage}%`;
+            progressBar.textContent = `${Math.round(percentage)}%`;
+            progressBar.style.backgroundColor = isCorrect ? '#4caf50' : '#ff6347'; // Green for correct, red for incorrect
+        }
+    
+        function revealFlag() {
+            clearInterval(timer);
+            gameContainer.style.display = 'none';
+            flagSection.style.display = 'block';
+            fetchLeaderboard();
+        }
+    
+        function gameOver() {
+            clearInterval(timer); // Stop the timer
+            retryBtn.style.display = 'block'; // Show retry button after game-over
+            submitFlagBtn.disabled = true; // Disable submit flag button after game-over
+            alert('Incorrect answer. Game Over!');
+        }
+    
+        function resetGame() {
+            // Reset game state
+            clearInterval(timer);
+            timeRemaining = 60;
+            timeLeft.textContent = timeRemaining;
+            correctAnswers = 0;  // Reset correct answers
+
+            // Reset progress bar
+            progressBar.style.width = '0%';
+            progressBar.textContent = '0%';
+            progressBar.style.backgroundColor = '#4caf50'; // Default to green
+    
+            // Reset questions visibility
+            const questions = document.querySelectorAll('.question');
+            questions.forEach((question, index) => {
+                question.style.display = index === 0 ? 'block' : 'none'; // Show only the first question
+            });
+    
+            // Reset sections visibility
+            startContainer.style.display = 'block';
+            gameContainer.style.display = 'none';
+            flagSection.style.display = 'none';
+            retryBtn.style.display = 'none';  // Hide retry button initially
+            submitFlagBtn.disabled = false; // Re-enable submit flag button
+        }
+    
+        function submitFlag() {
+            const flagInput = document.getElementById('flag-input').value;
+            const username = document.getElementById('username').value;
+    
+            if (username.trim() === '') {
+                alert('Please enter your name.');
+                return;
+            }
+
+            const completionTime = Math.max(0, 60 - timeRemaining); // Calculate time taken
+    
+            clearInterval(timer); // Stop the timer
+    
+            // Disable submit button after submission
+            submitFlagBtn.disabled = true;
+    
+            fetch('/submit_flag', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ flag: flagInput, username: username, completionTime: completionTime })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.success) {
+                    fetchLeaderboard(); // Update leaderboard
+                }
+            });
+        }
+    
+        function fetchLeaderboard() {
+            fetch('/leaderboard')
+            .then(response => response.json())
+            .then(data => {
+                leaderboardList.innerHTML = ''; // Clear previous leaderboard entries
+                data.forEach((entry, index) => {
+                    const li = document.createElement('li');
+                    li.textContent = `${index + 1}. ${entry.username} - Score: ${entry.score}, Time: ${entry.completionTime} seconds`;
+                    leaderboardList.appendChild(li);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
