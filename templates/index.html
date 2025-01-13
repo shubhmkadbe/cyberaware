@@ -189,9 +189,76 @@
         </div>
         <div class="question" id="question-7" style="display:none;">
             <h1>Which of these should you avoid sharing on social media?</h1>
-            <button class="btn" onclick="revealFlag()">Your personal information</button>
+            <button class="btn" onclick="nextQuestion(8)">Your personal information</button>
             <button class="btn" onclick="gameOver()">Vacation photos</button>
-        </div>        
+        </div> 
+        <div class="question" id="question-8" style="display:none;">
+            <h1>What is the purpose of a VPN?</h1>
+            <button class="btn" onclick="gameOver()">Speed up internet connection</button>
+            <button class="btn" onclick="nextQuestion(9)">Encrypt data and ensure privacy</button>
+        </div>   
+        <div class="question" id="question-9" style="display:none;">
+            <h1>How can you recognize a secure website?</h1>
+            <button class="btn" onclick="nextQuestion(10)">Look for "https" in the URL</button>
+            <button class="btn" onclick="gameOver()">Ignore the address bar</button>
+        </div>    
+        <div class="question" id="question-10" style="display:none;">
+            <h1>Which of these describes ransomware?</h1>
+            <button class="btn" onclick="gameOver()">Malware that slows down your computer</button>
+            <button class="btn" onclick="nextQuestion(11)">Malware that demands payment</button>
+        </div>
+        <!-- New Questions -->
+         <div class="question" id="question-11" style="display:none;">
+             <h1>What is a strong indication of a potential malware infection?</h1>
+             <button class="btn" onclick="gameOver()">The computer is working faster than usual</button>
+             <button class="btn" onclick="nextQuestion(12)">The computer is unusually slow or crashing</button>
+         </div>
+        <div class="question" id="question-12" style="display:none;">
+            <h1>What should you do if you think your computer is infected with malware?</h1>
+          <button class="btn" onclick="nextQuestion(13)">Run a virus scan</button>
+           <button class="btn" onclick="gameOver()">Ignore it and continue using the computer</button>
+         </div>
+     <div class="question" id="question-13" style="display:none;">
+         <h1>What is the purpose of a firewall?</h1>
+         <button class="btn" onclick="nextQuestion(14)">To monitor and control incoming and outgoing network traffic</button>
+         <button class="btn" onclick="gameOver()">To speed up your internet connection</button>
+       </div>
+    <div class="question" id="question-14" style="display:none;">
+    <h1>What should you do before connecting to a public Wi-Fi network?</h1>
+    <button class="btn" onclick="gameOver()">Share your personal information</button>
+    <button class="btn" onclick="nextQuestion(15)">Use a VPN</button>
+</div>
+<div class="question" id="question-15" style="display:none;">
+    <h1>What is phishing?</h1>
+    <button class="btn" onclick="nextQuestion(16)">A method of obtaining sensitive information through deception</button>
+    <button class="btn" onclick="gameOver()">A secure method to communicate online</button>
+</div>
+<div class="question" id="question-16" style="display:none;">
+    <h1>What is a trojan virus?</h1>
+    <button class="btn" onclick="nextQuestion(17)">Malware that disguises itself as a legitimate program</button>
+    <button class="btn" onclick="gameOver()">A type of anti-virus software</button>
+</div>
+<div class="question" id="question-17" style="display:none;">
+    <h1>What should you do if you receive an unsolicited phone call asking for personal information?</h1>
+    <button class="btn" onclick="gameOver()">Give them the requested information</button>
+    <button class="btn" onclick="nextQuestion(18)">Hang up and report the call</button>
+</div>
+<div class="question" id="question-18" style="display:none;">
+    <h1>How can you prevent your email account from being hacked?</h1>
+    <button class="btn" onclick="gameOver()">Use a simple password</button>
+    <button class="btn" onclick="nextQuestion(19)">Enable Two-Factor Authentication</button>
+</div>
+<div class="question" id="question-19" style="display:none;">
+    <h1>What is the main risk of using outdated software?</h1>
+    <button class="btn" onclick="nextQuestion(20)">It may contain security vulnerabilities</button>
+    <button class="btn" onclick="gameOver()">It may cause the software to slow down</button>
+</div>
+<div class="question" id="question-20" style="display:none;">
+    <h1>What should you do if you suspect your bank account has been compromised?</h1>
+    <button class="btn" onclick="gameOver()">Ignore it</button>
+    <button class="btn" onclick="revealFlag()">Contact your bank immediately</button>
+</div>
+
     </div>
 
     <!-- Flag Section -->
@@ -234,7 +301,7 @@
         let timer;
         let timeRemaining = 60;
         let correctAnswers = 0;  // Track correct answers
-        const totalQuestions = 7;
+        const totalQuestions = 20;
     
         document.getElementById('start-game').addEventListener('click', () => {
             resetGame();
@@ -348,6 +415,16 @@
                 leaderboardList.innerHTML = ''; // Clear previous leaderboard entries
                 data.forEach((entry, index) => {
                     const li = document.createElement('li');
+                    // Determine emoji for top 3 players
+                   let emoji = '';
+                   if (index === 0) {
+                    emoji = '🥇'; // Gold medal for 1st place
+                    } else if (index === 1) {
+                     emoji = '🥈'; // Silver medal for 2nd place
+                    } else if (index === 2) {
+                     emoji = '🥉'; // Bronze medal for 3rd place
+                      }
+                      
                     li.textContent = `${index + 1}. ${entry.username} - Score: ${entry.score}, Time: ${entry.completionTime} seconds`;
                     leaderboardList.appendChild(li);
                 });
